@@ -145,7 +145,7 @@ function scene:create( event )
             height = 100,
 
             -- Insert the images here
-            defaultFile = "Images/Instructions Button.png",
+            defaultFile = "Images/Instruction Button Unpressed.png",
             overFile = "Images/Instruction Button Pressed.png",
 
             -- When the button is released, call the Credits transition function
