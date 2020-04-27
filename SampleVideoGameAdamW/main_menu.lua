@@ -146,7 +146,7 @@ function scene:create( event )
 
             -- Insert the images here
             defaultFile = "Images/Instruction Button Unpressed.png",
-            overFile = "Images/Instruction Button Pressed.png",
+            overFile = "Images/Instructions Button Pressed.png",
 
             -- When the button is released, call the Credits transition function
             onRelease = InstructionsTransition
@@ -166,6 +166,10 @@ end -- function scene:create( event )
 
 -- The function called when the scene is issued to appear on screen
 function scene:show( event )
+
+    -- play background music
+    local soundChannel = audio.loadStream("Sounds/bkgMusic.mp3")
+    audio.play(soundChannel, {loops = -1})
 
     -- Creating a group that associates objects with the scene
     local sceneGroup = self.view
