@@ -7,6 +7,11 @@
 -----------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------------
+-- LOCAL SOUNDS
+-----------------------------------------------------------------------------------------
+local sound = audio.loadStream("Sounds/bkgMusic.mp3")
+local soundChannel 
+-----------------------------------------------------------------------------------------
 -- INITIALIZATIONS
 -----------------------------------------------------------------------------------------
 
@@ -167,10 +172,6 @@ end -- function scene:create( event )
 -- The function called when the scene is issued to appear on screen
 function scene:show( event )
 
-    -- play background music
-    local soundChannel = audio.loadStream("Sounds/bkgMusic.mp3")
-    audio.play(soundChannel, {loops = -1})
-
     -- Creating a group that associates objects with the scene
     local sceneGroup = self.view
 
@@ -188,8 +189,10 @@ function scene:show( event )
     -- Called when the scene is now on screen.
     -- Insert code here to make the scene come alive.
     -- Example: start timers, begin animation, play audio, etc.
-    elseif ( phase == "did" ) then       
-        
+    elseif ( phase == "did" ) then  
+
+      -- play background music
+    soundChannel = audio.play (sound, {loops = -1})    
 
     end
 
@@ -218,8 +221,10 @@ function scene:hide( event )
 
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.
-    end
 
+        soundChannel = audio.stop (sound)
+    end
+    
 end -- function scene:hide( event )
 
 -----------------------------------------------------------------------------------------
