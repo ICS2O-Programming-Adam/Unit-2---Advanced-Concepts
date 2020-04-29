@@ -63,7 +63,7 @@ local lArrow
 local motionx = 0
 local SPEED = 7
 local SPEED2 = -7
-local LINEAR_VELOCITY = -225
+local LINEAR_VELOCITY = -175
 local GRAVITY = 15
 
 local leftW 
@@ -240,9 +240,11 @@ local function onCollision( self, event )
         end
 
         if (event.target.myName == "door") then
-            --check to see if the user has answered 5 questions
+            --check to see if the user has answered 3 questions
             if (questionsAnswered == 3) then
                 -- after getting 3 questions right, go to the you win screen
+                composer.gotoScene( "you_win" )
+
             end
         end        
 
