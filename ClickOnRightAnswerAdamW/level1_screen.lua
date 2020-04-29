@@ -187,15 +187,15 @@ local function RestartScene()
         DisplayAnswers()
     end
 
-    if (numberCorrect == 5) then
+   -- if (numberCorrect == 5) then
         --composer.gotoScene("you_win")
-        WinScreenTransition()
-    else
+       -- WinScreenTransition()
+   -- else
 
-        DisplayAddEquation()
-        DetermineAnswers()
-        DisplayAnswers()
-    end
+       -- DisplayAddEquation()
+      --  DetermineAnswers()
+       -- DisplayAnswers()
+  --  end
 end
 
 
@@ -216,7 +216,8 @@ local function TouchListenerAnswer(touch)
             -- call RestartScene after 1 second
             timer.performWithDelay( 1000, RestartScene )
 
-        else incorrect.isVisible = true
+        elseif (answer ~= tonumber(userAnswer)) then
+            incorrect.isVisible = true
             -- call RestartScene after 1 second
             timer.performWithDelay( 1000, RestartScene )
         end        
