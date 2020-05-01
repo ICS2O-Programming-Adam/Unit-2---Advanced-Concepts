@@ -86,6 +86,14 @@ local alreadyClickedAnswer = false
 -- SOUND
 -----------------------------------------------------------------------------------------
 
+local bkSound = audio.loadSound("Sounds/level1Music.wav")
+local bkSoundChannel 
+
+local correctSound = audio.loadSound("Sounds/collectcoin.wav")
+local correctSoundChannel
+
+local incorrectSound = audio.loadSound("Sounds/WrongBuzzerOld.mp3")
+local incorrectSoundChannel
 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
@@ -172,6 +180,7 @@ local function RestartScene()
 
     alreadyClickedAnswer = false
     correct.isVisible = false
+    incorrect.isVisible = false
 
     livesText.text = "Number of lives = " .. tostring(lives)
     numberCorrectText.text = "Number correct = " .. tostring(numberCorrect)
@@ -187,15 +196,15 @@ local function RestartScene()
         DisplayAnswers()
     end
 
-   -- if (numberCorrect == 5) then
-        --composer.gotoScene("you_win")
-       -- WinScreenTransition()
-   -- else
+    if (numberCorrect == 5) then
+        composer.gotoScene("you_win")
+        WinScreenTransition()
+    else
 
-       -- DisplayAddEquation()
-      --  DetermineAnswers()
-       -- DisplayAnswers()
-  --  end
+        DisplayAddEquation()
+        DetermineAnswers()
+        DisplayAnswers()
+    end
 end
 
 
@@ -215,11 +224,15 @@ local function TouchListenerAnswer(touch)
             numberCorrect = numberCorrect + 1
             -- call RestartScene after 1 second
             timer.performWithDelay( 1000, RestartScene )
+            -- play the correct sound 
+            correctSoundChannel = audio.play(correctSound)
 
         elseif (answer ~= tonumber(userAnswer)) then
             incorrect.isVisible = true
             -- call RestartScene after 1 second
             timer.performWithDelay( 1000, RestartScene )
+            -- play the incorrect sound 
+            incorrectSoundChannel = audio.play(incorrectSound)
         end        
 
     end
@@ -237,8 +250,12 @@ local function TouchListenerWrongAnswer1(touch)
         if (answer ~= tonumber(userAnswer)) then
             -- decrease a life
             lives = lives - 1
+            -- make the text that tells you you're incorrect visible.
+            incorrect.isVisible = true
             -- call RestartScene after 1 second
-            timer.performWithDelay( 1000, RestartScene )            
+            timer.performWithDelay( 1000, RestartScene )  
+            -- play the incorrect sound 
+            incorrectSoundChannel = audio.play(incorrectSound)          
         end        
 
     end
@@ -257,8 +274,15 @@ local function TouchListenerWrongAnswer2(touch)
         if (answer ~= tonumber(userAnswer)) then
                 -- decrease a life
                 lives = lives - 1
+
+                -- make the text that tells you you're incorrect visible.
+                incorrect.isVisible = true
+
                 -- call RestartScene after 1 second
-                timer.performWithDelay( 1000, RestartScene )            
+                timer.performWithDelay( 1000, RestartScene )  
+
+                -- play the incorrect sound 
+                incorrectSoundChannel = audio.play(incorrectSound)          
          end        
     
      end
@@ -276,8 +300,15 @@ local function TouchListenerWrongAnswer3(touch)
         if (answer ~= tonumber(userAnswer)) then
             -- decrease a life
             lives = lives - 1
+
+            -- make the text that tells you you're incorrect visible.
+            incorrect.isVisible = true
+
             -- call RestartScene after 1 second
-            timer.performWithDelay( 1000, RestartScene )            
+            timer.performWithDelay( 1000, RestartScene )  
+
+            -- play the incorrect sound 
+            incorrectSoundChannel = audio.play(incorrectSound)          
         end        
 
     end
@@ -404,6 +435,9 @@ function scene:show( event )
 
     elseif ( phase == "did" ) then
 
+        -- play background music
+        bkSoundChannel =  audio.play(bkSound, {loops = -1})
+
         -- initialize the number of lives and number correct 
         lives = 2
         numberCorrect = 0
@@ -441,6 +475,9 @@ function scene:hide( event )
     -----------------------------------------------------------------------------------------
 
     elseif ( phase == "did" ) then
+
+        -- stop the backgroup music
+        audio.stop(bkSoundChannel)
     end
 
 end

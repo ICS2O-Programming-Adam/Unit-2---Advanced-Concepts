@@ -24,6 +24,19 @@ sceneName = "level1_screen"
 local scene = composer.newScene( sceneName )
 
 -----------------------------------------------------------------------------------------
+-- LOCAL SOUNDS
+-----------------------------------------------------------------------------------------
+
+local correctSound
+local correctSoundChannel
+
+local booSound
+local booSoundChannel
+
+local bgMusic = audio.loadSound("Sounds/")
+local bgMusicSoundChannel
+
+-----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
 
@@ -424,6 +437,7 @@ function scene:show( event )
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
+        bgMusicSoundChannel = audio.play(bgMusic)
         RestartLevel1()
         AddAnswerBoxEventListeners() 
 
@@ -452,7 +466,7 @@ function scene:hide( event )
 
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.
-        audio.stop()
+        audio.stop(bgMusicSoundChannel)
         RemoveAnswerBoxEventListeners()
     end
 

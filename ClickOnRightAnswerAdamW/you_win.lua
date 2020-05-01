@@ -33,8 +33,11 @@ local scene = composer.newScene( sceneName )
 local bkg
 
 -----------------------------------------------------------------------------------------
--- LOCAL FUNCTIONS
+-- LOCAL SOUNDS
 -----------------------------------------------------------------------------------------
+
+local winSound = audio.loadSound("Sounds/bkgMusic.mp3")
+local winSoundChannel
 
 -----------------------------------------------------------------------------------------
 -- GLOBAL SCENE FUNCTIONS
@@ -83,6 +86,7 @@ function scene:show( event )
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
+        winSoundChannel = audio.play(winSound)
     end
 
 end
@@ -110,6 +114,7 @@ function scene:hide( event )
 
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.
+        audio.stop(winSoundChannel)
     end
 
 end
