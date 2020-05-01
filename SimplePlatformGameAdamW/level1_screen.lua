@@ -79,6 +79,13 @@ local theBall
 local questionsAnswered = 0
 
 -----------------------------------------------------------------------------------------
+-- LOCAL SOUNDS
+----------------------------------------------------------------------------------------- 
+
+local spikeSound = audio.loadSound("Sounds/Pop.mp3")
+local spikeSoundChannel
+
+-----------------------------------------------------------------------------------------
 -- LOCAL SCENE FUNCTIONS
 ----------------------------------------------------------------------------------------- 
  
@@ -194,6 +201,7 @@ local function onCollision( self, event )
             (event.target.myName == "spikes3") then
 
             -- add sound effect here
+            spikeSoundChannel = audio.play(spikeSound)
 
             -- remove runtime listeners that move the character
             RemoveArrowEventListeners()
