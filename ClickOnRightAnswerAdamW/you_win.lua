@@ -3,7 +3,7 @@
 -- Created by: Gil Robern
 -- Modified by: Adam Winogron
 -- Date: 4/29/2020
--- Description: This shows the player that they won the game and plays a cheering sound.
+-- Description: This shows the player that they won the game and plays music.
 -----------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------------
