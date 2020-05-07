@@ -27,18 +27,21 @@ local scene = composer.newScene( sceneName )
 -- LOCAL SOUNDS
 -----------------------------------------------------------------------------------------
 
-local correctSound
+local correctSound = audio.loadSound("Sounds/")
 local correctSoundChannel
 
-local booSound
-local booSoundChannel
+local incorrectSound = audio.loadSound("Sounds/")
+local incorrectSoundChannel
 
-local bgMusic = audio.loadSound("Sounds/")
+local bgMusic = audio.loadSound("Sounds/level1Music.wav")
 local bgMusicSoundChannel
 
 -----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
+
+local points = 0
+local lives = 0
 
 -- The background image and soccer ball for this scene
 local bkg_image
@@ -120,25 +123,25 @@ local function DetermineAlternateAnswers()
 
         
     -- generate incorrect answer and set it in the textbox
-    alternateAnswer1 = correctAnswer + math.random(3, 5)
+    alternateAnswer1 = correctAnswer + math.random(1, 3)
     alternateAnswerBox1.text = alternateAnswer1
 
     -- generate incorrect answer and set it in the textbox
-    alternateAnswer2 = correctAnswer - math.random(1, 2)
+    alternateAnswer2 = correctAnswer - math.random(4, 7)
     alternateAnswerBox2.text = alternateAnswer2
 
     -- generate incorrect answer and set it in the textbox
-    alternateAnswer3 = correctAnswer - math.random(6, 8)
+    alternateAnswer3 = correctAnswer - math.random(8, 10)
     alternateAnswerBox3.text = alternateAnswer3
 
 -------------------------------------------------------------------------------------------
 -- RESET ALL X POSITIONS OF ANSWER BOXES (because the x-position is changed when it is
 -- placed into the black box)
 -----------------------------------------------------------------------------------------
-    answerbox.x = display.contentWidth * 0.9
-    alternateAnswerBox1.x = display.contentWidth * 0.9
-    alternateAnswerBox2.x = display.contentWidth * 0.9
-    alternateAnswerBox3.x = display.contentWidth * 0.9
+    answerbox.x = display.contentWidth * 0.1
+    alternateAnswerBox1.x = display.contentWidth * 0.1
+    alternateAnswerBox2.x = display.contentWidth * 0.1
+    alternateAnswerBox3.x = display.contentWidth * 0.1
 
 
 end
@@ -163,7 +166,7 @@ local function PositionAnswers()
         alternateAnswerBox1.y = display.contentHeight * 0.55
 
         --alternateAnswerBox3
-        alternateAnswerBox3.y = display.contentHeight * 0.90
+        alternateAnswerBox3.y = display.contentHeight * 0.85
 
         ---------------------------------------------------------
         --remembering their positions to return the answer in case it's wrong
@@ -184,7 +187,7 @@ local function PositionAnswers()
         alternateAnswerBox1.y = display.contentHeight * 0.7
 
         --alternateAnswerBox3
-        alternateAnswerBox3.y = display.contentHeight * 0.9
+        alternateAnswerBox3.y = display.contentHeight * 0.85
 
         --remembering their positions to return the answer in case it's wrong
         alternateAnswerBox1PreviousY = alternateAnswerBox1.y
@@ -203,7 +206,7 @@ local function PositionAnswers()
         alternateAnswerBox1.y = display.contentHeight * 0.4
 
         --alternateAnswerBox3
-        alternateAnswerBox3.y = display.contentHeight * 0.9
+        alternateAnswerBox3.y = display.contentHeight * 0.85
 
         --remembering their positions to return the answer in case it's wrong
         alternateAnswerBox1PreviousY = alternateAnswerBox1.y
@@ -213,7 +216,7 @@ local function PositionAnswers()
 
     -- random position 4
      elseif (randomPosition == 4) then
-        answerbox.y = display.contentHeight * 0.90
+        answerbox.y = display.contentHeight * 0.85
 
         --alternateAnswerBox2
         alternateAnswerBox2.y = display.contentHeight * 0.55
@@ -238,11 +241,18 @@ local function YouWinTransitionLevel1( )
     composer.gotoScene("you_win", {effect = "fade", time = 500})
 end
 
+local function YouLoseTransition()
+    composer.gotoScene("you_lose", {effect = "fade", time = 500})
+end
+
 -- Function to Restart Level 1
 local function RestartLevel1()
     DisplayQuestion()
     DetermineAlternateAnswers()
     PositionAnswers()    
+    PointsLives()
+    Win()
+    Lose()
 end
 
 -- Function to Check User Input
@@ -414,6 +424,31 @@ local function TouchListenerAnswerBox3(touch)
     end
 end 
 
+
+function PointsLives()
+    if (userAnswer ==  correctAnswer) then
+        points = points + 1
+
+    elseif ( userAnswer ~= correctAnswer) then
+        lives = lives + 1
+    end
+end
+
+
+function Win()
+    if (lives == 2) then
+        YouLoseTransition()
+    end
+end
+
+
+function Lose()
+    if (points == 3) then
+        YouWinTransitionLevel1()
+    end
+end
+
+
 -- Function that Adds Listeners to each answer box
 local function AddAnswerBoxEventListeners()
     answerbox:addEventListener("touch", TouchListenerAnswerbox)
@@ -459,7 +494,7 @@ function scene:create( event )
 
     --the text that displays the question
     questionText = display.newText( "" , 0, 0, nil, 100)
-    questionText.x = display.contentWidth * 0.3
+    questionText.x = display.contentWidth * 0.55
     questionText.y = display.contentHeight * 0.9
 
     -- create the soccer ball and place it on the scene
@@ -471,21 +506,24 @@ function scene:create( event )
     answerboxAlreadyTouched = false
     alternateAnswerBox1AlreadyTouched = false
     alternateAnswerBox2AlreadyTouched = false
+    alternateAnswerBox3AlreadyTouched = false
 
     --create answerbox alternate answers and the boxes to show them
     answerbox = display.newText("", display.contentWidth * 0.9, 0, nil, 100)
     alternateAnswerBox1 = display.newText("", display.contentWidth * 0.9, 0, nil, 100)
     alternateAnswerBox2 = display.newText("", display.contentWidth * 0.9, 0, nil, 100)
+    alternateAnswerBox3 = display.newText("", display.contentWidth * 0.9, 0, nil, 100)
 
     -- set the x positions of each of the answer boxes
     answerboxPreviousX = display.contentWidth * 0.9
     alternateAnswerBox1PreviousX = display.contentWidth * 0.9
     alternateAnswerBox2PreviousX = display.contentWidth * 0.9
+    alternateAnswerBox3PreviousX = display.contentWidth * 0.9
 
 
     -- the black box where the user will drag the answer
     userAnswerBoxPlaceholder = display.newImageRect("Images/userAnswerBoxPlaceholder.png",  130, 130, 0, 0)
-    userAnswerBoxPlaceholder.x = display.contentWidth * 0.6
+    userAnswerBoxPlaceholder.x = display.contentWidth * 0.8
     userAnswerBoxPlaceholder.y = display.contentHeight * 0.9
 
     ----------------------------------------------------------------------------------
