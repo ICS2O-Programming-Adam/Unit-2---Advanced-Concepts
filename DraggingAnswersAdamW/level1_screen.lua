@@ -27,10 +27,10 @@ local scene = composer.newScene( sceneName )
 -- LOCAL SOUNDS
 -----------------------------------------------------------------------------------------
 
-local correctSound = audio.loadSound("Sounds/")
+local correctSound = audio.loadSound("Sounds/Correct.wav")
 local correctSoundChannel
 
-local incorrectSound = audio.loadSound("Sounds/")
+local incorrectSound = audio.loadSound("Sounds/boo.mp3")
 local incorrectSoundChannel
 
 local bgMusic = audio.loadSound("Sounds/level1Music.wav")
@@ -250,14 +250,13 @@ local function RestartLevel1()
     DisplayQuestion()
     DetermineAlternateAnswers()
     PositionAnswers()    
-    PointsLives()
     Win()
     Lose()
 end
 
 -- Function to Check User Input
 local function CheckUserAnswerInput()
-          
+    PointsLives()
     timer.performWithDelay(1600, RestartLevel1) 
 end
 
@@ -424,13 +423,22 @@ local function TouchListenerAnswerBox3(touch)
     end
 end 
 
+function CorrectSound()
+    correctSoundChannel = audio.play(correctSound)
+end
+
+function IncorrectSound()
+    incorrectSoundChannel = audio.play(incorrectSound)
+end
 
 function PointsLives()
     if (userAnswer ==  correctAnswer) then
         points = points + 1
+        CorrectSound()
 
     elseif ( userAnswer ~= correctAnswer) then
         lives = lives + 1
+        IncorrectSound()
     end
 end
 
@@ -561,7 +569,7 @@ function scene:show( event )
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
-        bgMusicSoundChannel = audio.play(bgMusic)
+        bgMusicSoundChannel = audio.play(bgMusic, {loops = -1}) 
         RestartLevel1()
         AddAnswerBoxEventListeners() 
 
