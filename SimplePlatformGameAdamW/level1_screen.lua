@@ -631,7 +631,7 @@ function scene:hide( event )
         -- Called immediately after scene goes off screen.
 
         -- stop background music
-        audio.stop(bgSoundChannel)
+        audio.stop(bkgSoundChannel)
 
         RemoveCollisionListeners()
         RemovePhysicsBodies()
