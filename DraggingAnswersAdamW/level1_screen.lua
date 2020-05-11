@@ -27,7 +27,7 @@ local scene = composer.newScene( sceneName )
 -- LOCAL SOUNDS
 -----------------------------------------------------------------------------------------
 
-local correctSound = audio.loadSound("Sounds/Correct.wav")
+local correctSound = audio.loadSound("Sounds/nice2.m4a")
 local correctSoundChannel
 
 local incorrectSound = audio.loadSound("Sounds/boo.mp3")
@@ -86,9 +86,6 @@ local alternateAnswerBox3PreviousX
 -- the black box where the user will drag the answer
 local userAnswerBoxPlaceholder
 
--- sound effects
-local correctSound
-local booSound
 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
@@ -423,22 +420,22 @@ local function TouchListenerAnswerBox3(touch)
     end
 end 
 
-function CorrectSound()
+function PlayCorrectSound()
     correctSoundChannel = audio.play(correctSound)
 end
 
-function IncorrectSound()
+function PlayIncorrectSound()
     incorrectSoundChannel = audio.play(incorrectSound)
 end
 
 function PointsLives()
     if (userAnswer ==  correctAnswer) then
         points = points + 1
-        CorrectSound()
+        PlayCorrectSound()
 
-    elseif ( userAnswer ~= correctAnswer) then
+    else
         lives = lives + 1
-        IncorrectSound()
+        PlayIncorrectSound()
     end
 end
 
@@ -523,10 +520,10 @@ function scene:create( event )
     alternateAnswerBox3 = display.newText("", display.contentWidth * 0.9, 0, nil, 100)
 
     -- set the x positions of each of the answer boxes
-    answerboxPreviousX = display.contentWidth * 0.9
-    alternateAnswerBox1PreviousX = display.contentWidth * 0.9
-    alternateAnswerBox2PreviousX = display.contentWidth * 0.9
-    alternateAnswerBox3PreviousX = display.contentWidth * 0.9
+    answerboxPreviousX = display.contentWidth * 0.1
+    alternateAnswerBox1PreviousX = display.contentWidth * 0.1
+    alternateAnswerBox2PreviousX = display.contentWidth * 0.1
+    alternateAnswerBox3PreviousX = display.contentWidth * 0.1
 
 
     -- the black box where the user will drag the answer

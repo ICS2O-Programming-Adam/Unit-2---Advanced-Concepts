@@ -28,6 +28,16 @@ sceneName = "level1_screen"
 local scene = composer.newScene( sceneName )
 
 -----------------------------------------------------------------------------------------
+-- LOCAL SOUNDS
+-----------------------------------------------------------------------------------------
+
+local bkgSound = audio.loadSound("Sounds/Spooky.wav")
+local bkgSoundChannel
+
+local dieSound = audio.loadSound("Sounds/hitSound.mp3")
+local dieSoundChannel
+
+-----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
 
@@ -77,13 +87,6 @@ local ball3
 local theBall
 
 local questionsAnswered = 0
-
------------------------------------------------------------------------------------------
--- LOCAL SOUNDS
------------------------------------------------------------------------------------------ 
-
-local spikeSound = audio.loadSound("Sounds/Pop.mp3")
-local spikeSoundChannel
 
 -----------------------------------------------------------------------------------------
 -- LOCAL SCENE FUNCTIONS
@@ -193,15 +196,12 @@ local function onCollision( self, event )
 
     if ( event.phase == "began" ) then
 
-        --Pop sound
-        popSoundChannel = audio.play(popSound)
+        -- dieSound
+        dieSoundChannel = audio.play(dieSound)
 
         if  (event.target.myName == "spikes1") or 
             (event.target.myName == "spikes2") or
             (event.target.myName == "spikes3") then
-
-            -- add sound effect here
-            spikeSoundChannel = audio.play(spikeSound)
 
             -- remove runtime listeners that move the character
             RemoveArrowEventListeners()
@@ -587,6 +587,9 @@ function scene:show( event )
         numLives = 2
         questionsAnswered = 0
 
+        -- play the background music
+        bkgSoundChannel = audio.play(bkgSound {channel = 1, loops = -1})
+
         -- make all soccer balls visible
         MakeSoccerBallsVisible()
 
@@ -626,6 +629,10 @@ function scene:hide( event )
 
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.
+
+        -- stop background music
+        audio.stop(bgSoundChannel)
+
         RemoveCollisionListeners()
         RemovePhysicsBodies()
 
