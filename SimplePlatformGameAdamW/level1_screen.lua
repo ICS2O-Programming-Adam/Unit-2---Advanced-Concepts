@@ -31,7 +31,7 @@ local scene = composer.newScene( sceneName )
 -- LOCAL SOUNDS
 -----------------------------------------------------------------------------------------
 
-bkgSound = audio.loadSound("Sounds/Spooky.wav")
+bkgSound = audio.loadSound("Sounds/Grease_Monkey.mp3")
 bkgSoundChannel = audio.play(bkgSound, {channel = 1, loops = -1})
 
 local dieSound = audio.loadSound("Sounds/hitSound.mp3")
