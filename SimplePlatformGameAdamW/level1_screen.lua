@@ -27,6 +27,8 @@ sceneName = "level1_screen"
 -- Creating Scene Object
 local scene = composer.newScene( sceneName )
 
+soundOn = true
+
 -----------------------------------------------------------------------------------------
 -- LOCAL SOUNDS
 -----------------------------------------------------------------------------------------
@@ -87,6 +89,9 @@ local ball3
 local theBall
 
 local questionsAnswered = 0
+
+local muteButton
+local unmuteButton
 
 -----------------------------------------------------------------------------------------
 -- LOCAL SCENE FUNCTIONS
@@ -343,6 +348,32 @@ local function RemovePhysicsBodies()
  
 end
 
+local function Mute(touch)
+    if (touch.phase == "ended") then
+        -- pause the sound 
+        audio.pause(bkgSoundChannel)
+        -- set the boolean variable to be false ( sound is now muted )
+        soundOn = false
+        -- hide the mute button
+        muteButton.isVisible = false
+        -- make the unmute button visible
+        unmuteButton.isVisible = true
+    end
+end
+
+local function Unmute(touch)
+    if (touch.phase == "ended") then
+        -- pause the sound 
+        audio.play(bkgMusic)
+        -- set the boolean variable to be false ( sound is now muted )
+        soundOn = true
+        -- hide the mute button
+        muteButton.isVisible = true
+        -- make the unmute button visible
+        unmuteButton.isVisible = false
+    end
+end
+
 -----------------------------------------------------------------------------------------
 -- GLOBAL FUNCTIONS
 -----------------------------------------------------------------------------------------
@@ -555,6 +586,22 @@ function scene:create( event )
     -- Insert objects into the scene group in order to ONLY be associated with this scene
     sceneGroup:insert( ball3 )
 
+    -- mute button
+    muteButton = display.newImageRect ("Images/mute.png", 85, 85)
+    muteButton.x = 50
+    muteButton.y = 50
+
+    -- Insert objects into the scene group in order to ONLY be associated with this scene
+    sceneGroup:insert( muteButton )
+
+    -- unmute button
+    unmuteButton = display.newImageRect ("Images/unmute.png", 85, 85)
+    unmuteButton.x = 50
+    unmuteButton.y = 50
+
+    -- Insert objects into the scene group in order to ONLY be associated with this scene
+    sceneGroup:insert( unmuteButton )
+
 end --function scene:create( event )
 
 -----------------------------------------------------------------------------------------
@@ -583,6 +630,9 @@ function scene:show( event )
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
+           
+        muteButton:addEventListener("touch", Mute)
+        unmuteButton:addEventListener("touch", Unmute)
 
         numLives = 2
         questionsAnswered = 0
@@ -601,6 +651,9 @@ function scene:show( event )
 
         -- create the character, add physics bodies and runtime listeners
         ReplaceCharacter()
+
+        if (soundOn == true) then
+
 
     end
 
@@ -627,6 +680,9 @@ function scene:hide( event )
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.
        
+        muteButton:removeEventListener("touch", Mute)
+        unmuteButton:removeEventListener("touch", Unmute)
+
         RemoveCollisionListeners()
         RemovePhysicsBodies()
 
