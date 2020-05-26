@@ -351,9 +351,7 @@ end
 local function Mute(touch)
     if (touch.phase == "ended") then
         -- pause the sound 
-        audio.pause(bkgSoundChannel)
-        -- set the boolean variable to be false ( sound is now muted )
-        soundOn = false
+        audio.stop(bkgSoundChannel)
         -- hide the mute button
         muteButton.isVisible = false
         -- make the unmute button visible
@@ -364,9 +362,7 @@ end
 local function Unmute(touch)
     if (touch.phase == "ended") then
         -- pause the sound 
-        audio.play(bkgMusic)
-        -- set the boolean variable to be false ( sound is now muted )
-        soundOn = true
+        bkgSoundChannel = audio.play(bkgSound)
         -- hide the mute button
         muteButton.isVisible = true
         -- make the unmute button visible
@@ -589,7 +585,8 @@ function scene:create( event )
     -- mute button
     muteButton = display.newImageRect ("Images/mute.png", 85, 85)
     muteButton.x = 50
-    muteButton.y = 50
+    muteButton.y = 700
+    muteButton.isVisible = true
 
     -- Insert objects into the scene group in order to ONLY be associated with this scene
     sceneGroup:insert( muteButton )
@@ -597,8 +594,8 @@ function scene:create( event )
     -- unmute button
     unmuteButton = display.newImageRect ("Images/unmute.png", 85, 85)
     unmuteButton.x = 50
-    unmuteButton.y = 50
-
+    unmuteButton.y = 700
+    unmuteButton.isVisible = false
     -- Insert objects into the scene group in order to ONLY be associated with this scene
     sceneGroup:insert( unmuteButton )
 
@@ -651,12 +648,7 @@ function scene:show( event )
 
         -- create the character, add physics bodies and runtime listeners
         ReplaceCharacter()
-
-        if (soundOn == true) then
-
-
     end
-
 end --function scene:show( event )
 
 -----------------------------------------------------------------------------------------
